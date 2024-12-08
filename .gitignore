@@ -22,3 +22,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+api/models/breast_cancer_cnn_model (1).keras
