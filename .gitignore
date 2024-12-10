@@ -23,4 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 
-api/models/breast_cancer_cnn_model (1).keras
+api/models/
+
+venv/
