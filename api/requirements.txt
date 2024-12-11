@@ -5,5 +5,5 @@ fastapi
 uvicorn
 python-multipart
 python-dotenv
-python-cors
+fastapi-cors
 gdown
