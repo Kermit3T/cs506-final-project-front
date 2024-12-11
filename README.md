@@ -4,7 +4,7 @@
 This web application provides an interface for analyzing microscopy images to detect and classify cancer cells. The application uses a TensorFlow model to classify cells into three categories: High, Low, and Stroma. Users can upload and crop images, which are then analyzed by the model.
 
 ## Prerequisites
-- Python 3.8 or higher
+- Python 3.10 or higher
 - Node.js 16 or higher
 - npm (usually comes with Node.js)
 - Git

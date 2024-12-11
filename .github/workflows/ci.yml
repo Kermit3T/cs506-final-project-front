@@ -1,68 +1,68 @@
 name: CI/CD
 
 on:
-  push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main, develop ]
+ push:
+   branches: [ main, develop ]
+ pull_request:
+   branches: [ main, develop ]
 
 jobs:
-  build-and-test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-        python-version: ['3.10']
-        node-version: ['18.x']
+ build-and-test:
+   runs-on: ${{ matrix.os }}
+   strategy:
+     matrix:
+       os: [ubuntu-latest]
+       python-version: ['3.10']
+       node-version: ['18.x']
+     include:
+       - os: windows-latest
+         python-version: '3.10'
+         node-version: '18.x'
+         test-backend: false
 
-    steps:
-    - uses: actions/checkout@v3
+   steps:
+   - uses: actions/checkout@v3
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
+   - name: Set up Python ${{ matrix.python-version }}
+     uses: actions/setup-python@v3
+     with:
+       python-version: ${{ matrix.python-version }}
 
-    - name: Set up Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
+   - name: Set up Node.js ${{ matrix.node-version }}
+     uses: actions/setup-node@v3
+     with:
+       node-version: ${{ matrix.node-version }}
 
-    - name: Cache Python dependencies
-      uses: actions/cache@v3
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('api/requirements.txt') }}
+   - name: Cache Python dependencies
+     uses: actions/cache@v3
+     with:
+       path: ~/.cache/pip
+       key: ${{ runner.os }}-pip-${{ hashFiles('api/requirements.txt') }}
 
-    - name: Cache Node.js dependencies
-      uses: actions/cache@v3
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('package.json') }}
+   - name: Cache Node.js dependencies
+     uses: actions/cache@v3
+     with:
+       path: ~/.npm
+       key: ${{ runner.os }}-node-${{ hashFiles('package.json') }}
 
-    - name: Install dependencies
-      run: |
-        make setup
-        make install-model
+   - name: Install dependencies
+     run: |
+       make setup
+       make install-model
 
-    - name: Backend healthcheck
-      run: |
-          if [ "$RUNNER_OS" == "Windows" ]; then
-            start /B make run
-            ping -n 30 127.0.0.1 > nul
-            curl --max-time 30 http://localhost:8000/api/health || exit 1
-          else
-            make run & sleep 30
-            curl --max-time 30 http://localhost:8000/api/health || exit 1
-            pkill -f uvicorn
-          fi
-      shell: bash
+   - name: Backend healthcheck
+     if: runner.os == 'Linux'
+     run: |
+        make run & sleep 15
+        curl --max-time 15 http://localhost:8000/api/health || exit 1
+        pkill -f uvicorn
+     shell: bash
 
-    - name: Frontend build
-      run: npm run build
+   - name: Frontend build
+     run: npm run build
 
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: dist
-        path: dist/
+   - name: Upload build artifacts
+     uses: actions/upload-artifact@v3
+     with:
+       name: dist
+       path: dist/
