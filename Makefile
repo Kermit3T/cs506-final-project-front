@@ -30,7 +30,7 @@ setup-frontend:
 .PHONY: setup-backend
 setup-backend:
 	$(PYTHON_CMD) -m venv $(VENV_DIR)
-	$(ACTIVATE_CMD) $(SEP) $(PIP_CMD) install --upgrade pip $(SEP) $(PIP_CMD) install -r requirements.txt
+	$(ACTIVATE_CMD) $(SEP) $(PIP_CMD) install --upgrade pip $(SEP) $(PIP_CMD) install -r api/requirements.txt
 
 # Run both frontend and backend
 .PHONY: run
@@ -53,16 +53,13 @@ else
 	rm -rf node_modules
 endif
 
-# Install model (assuming it's downloaded separately due to size)
+# Install command
 .PHONY: install-model
 install-model:
-	@echo "Checking for model directory..."
-ifeq ($(OS),Windows_NT)
-	if not exist "api\models" mkdir "api\models"
-else
-	mkdir -p api/models
-endif
-	@echo "Please place the breast_cancer_cnn_model.keras file in the api/models directory"
+	@echo "Installing gdown..."
+	$(ACTIVATE_CMD) $(SEP) $(PIP_CMD) install gdown
+	@echo "Downloading model..."
+	$(ACTIVATE_CMD) $(SEP) $(PYTHON_CMD) download_model.py
 
 # Help command
 .PHONY: help

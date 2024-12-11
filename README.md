@@ -11,6 +11,46 @@ This web application provides an interface for analyzing microscopy images to de
 
 ## Installation
 
+markdownCopy# Cancer Cell Detection Web Application
+
+## Overview
+This web application provides an interface for analyzing microscopy images to detect and classify cancer cells. The application uses a TensorFlow model to classify cells into three categories: High, Low, and Stroma. Users can upload and crop images, which are then analyzed by the model.
+
+## Prerequisites
+- Python 3.8 or higher
+- Node.js 16 or higher
+- npm (usually comes with Node.js)
+- Git
+
+## Installation
+
+### Setting Up the Project Using Make (Recommended)
+```bash
+# Clone the repository
+git clone https://github.com/your-username/your-repo-name.git
+cd your-repo-name
+
+# Install all dependencies and set up environment
+make setup
+
+# Download the model
+make install-model
+
+# Run both frontend and backend
+make run
+The frontend will run on http://localhost:5173
+The backend will run on http://localhost:8000
+Available make commands:
+
+make setup - Set up frontend and backend dependencies
+make run - Start both servers
+make clean - Remove virtual environment and node_modules
+make install-model - Download model file
+make help - Show all available commands
+```
+
+### Setting Up the Project Manually
+
 ### 1. Clone the Repository
 ```bash
 git clone https://github.com/your-username/your-repo-name.git
@@ -75,20 +115,6 @@ The frontend will run on http://localhost:5173
    - Classification
    - Confidence score
    - Detailed probability breakdown for each class
-
-## Project Structure
-```
-project-root/
-├── api/
-│   ├── models/                  # Model storage
-│   ├── preprocessor/            # Image preprocessing utilities
-│   └── app.py                  # FastAPI backend
-├── src/
-│   ├── components/             # React components
-│   ├── styles/                 # Global styles
-│   └── App.jsx                # Main application component
-└── package.json               # Node.js dependencies
-```
 
 ## Troubleshooting
 

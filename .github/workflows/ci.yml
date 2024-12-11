@@ -1,0 +1,71 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build-and-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ['3.8', '3.9']
+        node-version: ['18.x']
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Cache Python dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('api/requirements.txt') }}
+
+    - name: Cache Node.js dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('package.json') }}
+
+    - name: Install dependencies
+      run: |
+        make setup
+        make install-model
+
+    - name: Run ESLint
+      run: npm run lint
+
+    - name: Backend healthcheck
+      run: |
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          start /B make run
+          ping -n 10 127.0.0.1 > nul
+          curl http://localhost:8000/api/health || exit 1
+        else
+          make run & sleep 10
+          curl http://localhost:8000/api/health || exit 1
+          pkill -f uvicorn
+        fi
+      shell: bash
+
+    - name: Frontend build
+      run: npm run build
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: dist
+        path: dist/
