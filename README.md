@@ -16,19 +16,27 @@ This web application provides an interface for analyzing microscopy images to de
 # Clone the repository
 git clone https://github.com/Kermit3T/cs506-final-project-front
 cd your-repo-name
+```
 
 # Install all dependencies and set up environment
+```bash
 make setup
+```
 
 # Download the model
+```bash
 make install-model
+```
 
 # Run both frontend and backend
+```bash
 make run
+```
 The frontend will run on http://localhost:5173
 The backend will run on http://localhost:8000
-Available make commands:
 
+Available make commands:
+```bash
 make setup - Set up frontend and backend dependencies
 make run - Start both servers
 make clean - Remove virtual environment and node_modules
@@ -66,12 +74,18 @@ npm install
 ```
 
 ### 5. Model Setup
-Ensure the model file is in the correct location:
+Download the model file from this link:
+```bash
+https://drive.google.com/file/d/1MCeY5EMv3xC6g4uvenP8JB1pcfAhvhhA/view
 ```
-api/models/breast_cancer_cnn_model (1).keras
-```
+Rename the downloaded file to breast_cancer_cnn_model (1).keras and place it in: Copyapi/models/
 
+Alternatively, you can run:
+```bash
+make install-model
+````
 ## Running the Application
+```
 
 ### 1. Start the Backend Server
 In one terminal window (with virtual environment activated):
