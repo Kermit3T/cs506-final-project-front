@@ -47,15 +47,15 @@ jobs:
 
     - name: Backend healthcheck
       run: |
-        if [ "$RUNNER_OS" == "Windows" ]; then
-          start /B make run
-          ping -n 10 127.0.0.1 > nul
-          curl http://localhost:8000/api/health || exit 1
-        else
-          make run & sleep 10
-          curl http://localhost:8000/api/health || exit 1
-          pkill -f uvicorn
-        fi
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            start /B make run
+            ping -n 30 127.0.0.1 > nul
+            curl --max-time 30 http://localhost:8000/api/health || exit 1
+          else
+            make run & sleep 30
+            curl --max-time 30 http://localhost:8000/api/health || exit 1
+            pkill -f uvicorn
+          fi
       shell: bash
 
     - name: Frontend build
