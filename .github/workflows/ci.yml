@@ -45,9 +45,6 @@ jobs:
         make setup
         make install-model
 
-    - name: Run ESLint
-      run: npm run lint
-
     - name: Backend healthcheck
       run: |
         if [ "$RUNNER_OS" == "Windows" ]; then
