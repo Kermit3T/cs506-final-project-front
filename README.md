@@ -11,23 +11,10 @@ This web application provides an interface for analyzing microscopy images to de
 
 ## Installation
 
-markdownCopy# Cancer Cell Detection Web Application
-
-## Overview
-This web application provides an interface for analyzing microscopy images to detect and classify cancer cells. The application uses a TensorFlow model to classify cells into three categories: High, Low, and Stroma. Users can upload and crop images, which are then analyzed by the model.
-
-## Prerequisites
-- Python 3.8 or higher
-- Node.js 16 or higher
-- npm (usually comes with Node.js)
-- Git
-
-## Installation
-
 ### Setting Up the Project Using Make (Recommended)
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/your-repo-name.git
+git clone https://github.com/Kermit3T/cs506-final-project-front
 cd your-repo-name
 
 # Install all dependencies and set up environment
@@ -53,7 +40,7 @@ make help - Show all available commands
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
+git clone https://github.com/Kermit3T/cs506-final-project-front
 cd your-repo-name
 ```
 
